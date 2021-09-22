@@ -16,6 +16,8 @@ const movie = 'The Lion King'
 test("This should Add a Movie", async ()=> {
     let searchBar = await driver.findElement(By.name('input'))
     await searchBar.sendKeys(`${movie}\n`)
+    let movieTitle = await driver.findElement(By.xpath(`//ul/li/span`)).getText()
+    expect(movieTitle).toEqual(movie)
     await driver.sleep(100)
 })
 test("this should verify that the title is correct", async ()=>{
@@ -27,12 +29,16 @@ test("this should cross off a movie", async ()=>{
     await driver.sleep(500)
     let title = await driver.findElement(By.xpath(`//ul/li/span`))
     await title.click()
+    let movieClass = await driver.findElement(By.xpath(`//ul/li/span`)).getAttribute("class")
+    expect(movieClass).toEqual('checked')
 })
 
 test("this should remove a movie", async ()=> {
     await driver.sleep(500)
     let button = await driver.findElement(By.xpath(`//ul/li/button`))
     await button.click()
+    let ul = await driver.findElement(By.xpath("//ul")).getAttribute("innerHTML")
+    expect(ul).toEqual('')
 })
 
 // test("Should return an interesting result", async () => {
